@@ -1,0 +1,57 @@
+export default {
+  card: {
+    name: 'string',
+    description: 'string',
+    image: 'string',
+    timestamp: false,
+  },
+  denomination: {
+    cardId: 'ref card id',
+    currency: "enum:['USD','UK','AU','EUR','CHF']",
+    description: 'string',
+    price: 'number',
+    thresholds: [
+      {
+        threshold: 'number',
+        price: 'number',
+      },
+    ],
+    unitAmount: 'number:default(1)',
+  },
+  transaction: {
+    cardId: 'ref card id',
+    userId: 'ref user id',
+    adminId: '',
+    currency: 'USD',
+    files: 'string',
+    status: 'enum:[pending, rejected, successful]',
+    remark: '',
+    reasonOnreject: '',
+    price: 'number',
+    amount: 'number',
+    timestamp: 'date',
+  },
+  wallet: {
+    userid: '',
+    withdraw: '',
+    balance: '',
+    pin: '',
+    timestamp: '',
+  },
+  bank: {
+    userid: '',
+    name: '',
+    bankname: '',
+    number: '',
+    default: '',
+  },
+  payment: {
+    userid: '',
+    adminid: '',
+    amount: '',
+    paymentDetail: {},
+    reference: '',
+    paymentBank: '',
+    status: ['processing', 'completed', 'cancelled'],
+  },
+}
