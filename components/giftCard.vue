@@ -1,13 +1,13 @@
 <template>
-  <div class="content">
-    <nuxt-link :to="link">
+  <div class="content" :class="{ active: isActive }">
+    <span>
       <div class="content-overlay"></div>
       <img class="content-image" :src="image" />
       <div class="content-details fadeIn-bottom">
         <h3 class="content-title">{{ title }}</h3>
         <!-- <p class="content-text"><i class="fa fa-map-marker"></i> Russia</p> -->
       </div>
-    </nuxt-link>
+    </span>
   </div>
 </template>
 
@@ -24,10 +24,9 @@ export default {
       default: () => '',
       required: true,
     },
-    link: {
-      type: String,
-      default: () => '',
-      required: true,
+    isActive: {
+      type: Boolean,
+      default: () => false,
     },
   },
 }
@@ -56,6 +55,7 @@ body {
   position: relative;
   margin: auto;
   overflow: hidden;
+  opacity: 0.5;
 }
 
 .content .content-overlay {
@@ -113,6 +113,7 @@ img {
   letter-spacing: 0.15em;
   margin-bottom: 0.5em;
   text-transform: uppercase;
+  font-size: 1rem;
 }
 
 .content-details p {
@@ -122,5 +123,10 @@ img {
 
 .fadeIn-bottom {
   top: 80%;
+}
+.content.active {
+  border: 3px solid #3c4b64;
+  border-radius: 10px;
+  opacity: 1;
 }
 </style>

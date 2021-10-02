@@ -2,7 +2,8 @@ import baseURL from './endpoints/baseUrl'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'buzzle',
+    title:
+      'Buzzle: Sell and Redeem Gift Cards For Naira - 100% \nReliable-Trusted-Effictent-convenient Platform',
     htmlAttrs: {
       lang: 'en',
     },
@@ -54,10 +55,10 @@ export default {
     localStorage: false,
     // redirect: false,
     redirect: {
-      login: '/',
-      logout: '/',
+      login: '/login',
+      logout: '/login',
       callback: false,
-      home: false,
+      home: '/',
     },
     strategies: {
       local: {
@@ -88,6 +89,12 @@ export default {
   router: {
     middleware: ['auth'],
   },
+  loadingIndicator: {
+    name: 'fading-circle',
+    color: '#fff',
+    background: '#39f',
+  },
+  // loadingIndicator: '~/components/loading.vue',
   loading: {
     color: 'white',
   },
@@ -98,6 +105,8 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
   server: {
-    host: '0', // default: localhost
+    port: 4001, // default: 3000
+    host: '0.0.0.0', // default: localhost,
+    timing: false,
   },
 }

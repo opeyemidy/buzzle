@@ -469,15 +469,15 @@
 </template>
 
 <script>
-import { CChartLineSimple, CChartBarSimple } from '~/components/charts/index.js'
+// import { CChartLineSimple, CChartBarSimple } from '~/components/charts/index.js'
 import WidgetsBrand from '~/components/widgets/WidgetsBrand'
 import WidgetsDropdown from '~/components/widgets/WidgetsDropdown'
 
 export default {
   name: 'Widgets',
   components: {
-    CChartLineSimple,
-    CChartBarSimple,
+    // CChartLineSimple,
+    // CChartBarSimple,
     WidgetsBrand,
     WidgetsDropdown,
   },

@@ -32,10 +32,44 @@ export default {
         })
         .catch((err) => console.log(err)) // do what you need with your errors
     },
-    onFileSelected(file, event) {
-      this.selectedFile = event.target.files[0]
-      // this.selectedFile = file
+    onFileSelected(file) {
+      this.selectedFile = file
+      this.previewFiles()
       // console.log(this.selectedFile)
+    },
+    previewFiles() {
+      const preview = this.$refs.preview
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild)
+      }
+      const files = this.selectedFile
+      function readAndPreview(file) {
+        console.log(Object.values(files))
+        // if (files.includes(file)) return
+        // Make sure `file.name` matches our extensions criteria
+        if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+          const reader = new FileReader()
+
+          reader.addEventListener(
+            'load',
+            function () {
+              const image = new Image()
+              image.height = 100
+              image.title = file.name
+              image.src = this.result
+              image.classList = 'mx-1'
+              preview.appendChild(image)
+            },
+            false
+          )
+
+          reader.readAsDataURL(file)
+        }
+      }
+
+      if (files) {
+        ;[].forEach.call(files, readAndPreview)
+      }
     },
   },
 }

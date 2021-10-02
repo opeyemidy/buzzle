@@ -1,3 +1,4 @@
+import endpoints from '~/endpoints'
 // export default function ({ $axios, redirect }) {
 //   $axios.onError((error) => {
 //     if (error.response.status === 500) {
@@ -5,39 +6,58 @@
 //     }
 //   })
 // }
-import endpoints from '~/endpoints'
 export default ({ app, $axios, redirect }, inject) => {
+  const setMultipartData = () => {
+    return $axios.setHeader('Content-Type', 'multipart/form-data')
+  }
+
+  const cardEndpoint = endpoints.cards
+  const denominationsEndpoint = endpoints.denominations
+  const transactionsEndpoint = endpoints.transactions
+
+  const register = async (data) => await $axios.$post(endpoints.register, data)
   const forgotPassword = async (data) =>
     await $axios.$post(endpoints.forgotPassword, data)
   const resetPassword = async (token, data) =>
     await $axios.$post(`${endpoints.resetPassword}?token=${token}`, data)
   const createCard = async (data) => {
-    return await $axios.$post(endpoints.card, data)
+    return await $axios.$post(cardEndpoint, data)
   }
   const getCards = async (query = {}) => {
     const { page, limit } = query
     let data = `?limit=${limit || 10}`
     if (page) data = `${data}&page=${page}`
     if (Object.keys(query).length === 0) data = ''
-    return await $axios.$get(endpoints.card + data)
+    return await $axios.$get(cardEndpoint + data)
   }
-  const getCard = async (id) => await $axios.$get(endpoints.card + '/' + id)
+  const getCard = async (id) => await $axios.$get(cardEndpoint + '/' + id)
   const updateCard = async (id, data) => {
-    await $axios.setHeader('Content-Type', 'multipart/form-data')
-    return await $axios.$patch(endpoints.card + '/' + id, data)
+    setMultipartData()
+    return await $axios.$patch(cardEndpoint + '/' + id, data)
   }
   const addDenomination = async (data) => {
-    return await $axios.$post(endpoints.denominations, data)
+    return await $axios.$post(denominationsEndpoint, data)
   }
   const updateDenomination = async (id, data) => {
-    return await $axios.$patch(endpoints.denominations + '/' + id, data)
+    return await $axios.$patch(denominationsEndpoint + '/' + id, data)
   }
   const deleteDenomination = async (id) => {
-    return await $axios.$delete(endpoints.denominations + '/' + id)
+    return await $axios.$delete(denominationsEndpoint + '/' + id)
+  }
+  const createTransaction = async (data) => {
+    return await $axios.$post(transactionsEndpoint, data)
+  }
+  const getTransactions = async (query = {}) => {
+    const { page, limit } = query
+    let data = `?limit=${limit || 10}`
+    if (page) data = `${data}&page=${page}`
+    if (Object.keys(query).length === 0) data = ''
+    return await $axios.$get(transactionsEndpoint + data)
   }
 
   // Inject $hello(msg) in Vue, context and store.
   inject('request', {
+    register,
     forgotPassword,
     resetPassword,
     createCard,
@@ -47,5 +67,7 @@ export default ({ app, $axios, redirect }, inject) => {
     addDenomination,
     updateDenomination,
     deleteDenomination,
+    createTransaction,
+    getTransactions,
   })
 }

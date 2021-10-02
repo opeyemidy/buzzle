@@ -1,13 +1,17 @@
 import baseUrl from './baseUrl'
 const authEndpoint = baseUrl + '/auth'
-// const userEndpoint = baseUrl + '/users'
-const card = baseUrl + '/cards'
-const denominations = baseUrl + '/denominations'
+const register = `${authEndpoint}/register`
 const forgotPassword = `${authEndpoint}/forgot-password`
 const resetPassword = `${authEndpoint}/reset-password`
+// const userEndpoint = baseUrl + '/users'
+const cards = baseUrl + '/cards'
+const denominations = baseUrl + '/denominations'
+const transactions = baseUrl + '/transactions'
 export default {
+  register,
   forgotPassword,
   resetPassword,
-  card,
+  cards,
   denominations,
+  transactions,
 }

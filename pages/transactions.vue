@@ -1,23 +1,28 @@
 <template>
   <CRow>
-    <CCol col="12">
+    <page-loader v-if="true" />
+    <CCol v-else col="12">
       <CCard>
-        <CCardHeader> Users </CCardHeader>
+        <CCardHeader> Transactions </CCardHeader>
         <CCardBody>
           <CDataTable
             hover
-            table-filter
+            :table-filter="false"
             sorter
-            striped
-            :items="items"
+            :striped="false"
+            :items="transactions"
             :fields="fields"
-            :items-per-page="5"
+            :items-per-page="limit"
             :clickable-rows="false"
-            :active-page="activePage"
+            :active-page="page"
             :pagination="{ doubleArrows: false, align: 'center' }"
             @row-clicked="() => null || rowClicked"
-            @page-change="pageChange"
           >
+            <template #cardId="data">
+              <td>
+                {{ data.item.cardId.name }}
+              </td>
+            </template>
             <template #status="data">
               <td>
                 <CBadge :color="getBadge(data.item.status)">
@@ -25,7 +30,7 @@
                 </CBadge>
               </td>
             </template>
-            <template #show_details="{ item, index }">
+            <template #card_images="{ item, index }">
               <td class="py-2">
                 <CButton
                   color="primary"
@@ -43,23 +48,31 @@
                 :show="Boolean(item._toggled)"
                 :duration="collapseDuration"
               >
-                <CCardBody>
-                  <CMedia :aside-image-props="{ height: 102 }">
-                    <h4>
-                      {{ item.username }}
-                    </h4>
-                    <p class="text-muted">User since: {{ item.registered }}</p>
-                    <CButton size="sm" color="info" class="">
-                      User Settings
-                    </CButton>
-                    <CButton size="sm" color="danger" class="ml-1">
-                      Delete
-                    </CButton>
-                  </CMedia>
+                <hr class="mt-0" />
+                <CCardBody class="pt-0">
+                  <CRow :gutters="false" class="flex-nowrap overflow-auto">
+                    <CCol
+                      v-for="image in item.images"
+                      :key="image"
+                      col="4"
+                      md="2"
+                    >
+                      <img :src="image" width="100%" alt="card image" />
+                    </CCol>
+                  </CRow>
+                  <!-- </CMedia> -->
                 </CCardBody>
               </CCollapse>
             </template>
           </CDataTable>
+          <CPagination
+            v-if="totalPages > 1"
+            class="mt-3"
+            :active-page.sync="page"
+            :pages="totalPages"
+            size="sm"
+            align="center"
+          />
         </CCardBody>
       </CCard>
     </CCol>
@@ -78,41 +91,66 @@ export default {
       }),
       collapseDuration: 0,
       fields: [
-        { key: 'username', label: 'Name', _classes: 'font-weight-bold' },
-        { key: 'registered' },
-        { key: 'role' },
+        { key: 'cardId', label: 'Card', _classes: 'font-weight-bold' },
+        { key: 'currency' },
+        { key: 'price' },
+        { key: 'rate' },
+        { key: 'amount' },
         { key: 'status' },
-        {
-          key: 'show_details',
-          label: '',
-          _style: 'width:1%',
-          sorter: false,
-          filter: false,
-        },
+        { key: 'card_images' },
       ],
-      activePage: 1,
+      transactions: [],
+      page: 1,
+      totalPages: 0,
+      totalResults: 0,
+      limit: 20,
     }
+  },
+  async fetch() {
+    const { results, page, limit, totalPages, totalResults } =
+      await this.$request.getTransactions({
+        limit: this.limit,
+        page: this.page,
+      })
+    this.transactions = results
+    this.page = page
+    this.totalPages = totalPages
+    this.totalResults = totalResults
+    this.limit = limit
   },
   watch: {
     $route: {
       immediate: true,
       handler(route) {
-        if (route.query && route.query.page) {
-          this.activePage = Number(route.query.page)
+        if (Object.keys(route.query).length !== 0) {
+          this.limit = parseInt(route.query.limit)
+          this.page = parseInt(route.query.page)
+          this.$fetch()
         }
+      },
+    },
+    page: {
+      handler() {
+        const query = Object.entries({
+          limit: this.limit,
+          page: this.page,
+        }).reduce((acc, [key, val]) => {
+          if (!val) return acc
+          return { ...acc, [key]: val }
+        }, {})
+        this.$router.push({ query: { ...query } })
+        this.$fetch()
       },
     },
   },
   methods: {
     getBadge(status) {
       switch (status) {
-        case 'Active':
+        case 'approved':
           return 'success'
-        case 'Inactive':
-          return 'secondary'
-        case 'Pending':
+        case 'pending':
           return 'warning'
-        case 'Banned':
+        case 'rejected':
           return 'danger'
         default:
           return 'primary'
@@ -121,11 +159,9 @@ export default {
     rowClicked(item, index) {
       this.$router.push({ path: `users/${index + 1}` })
     },
-    pageChange(val) {
-      this.$router.push({ query: { page: val } })
-    },
-    toggleDetails(item) {
-      this.$set(this.items[item.id], '_toggled', !item._toggled)
+    toggleDetails(item, index) {
+      // return console.log(item, index)
+      this.$set(this.transactions[index], '_toggled', !item._toggled)
       this.collapseDuration = 300
       this.$nextTick(() => {
         this.collapseDuration = 0
