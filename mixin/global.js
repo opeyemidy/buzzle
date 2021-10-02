@@ -71,6 +71,10 @@ export default {
         ;[].forEach.call(files, readAndPreview)
       }
     },
+    formatDescription(description) {
+      if (description) return description.replace(/\n/g, '<br />')
+      return ''
+    },
   },
 }
 

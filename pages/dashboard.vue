@@ -205,6 +205,19 @@ export default {
     this.totalResults = totalResults
     this.limit = limit
   },
+  head() {
+    return {
+      title: 'Dashboard — Buzzle',
+      meta: [
+        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'My custom description',
+        },
+      ],
+    }
+  },
   watch: {
     page() {
       this.$fetch()
@@ -316,10 +329,6 @@ export default {
         default:
           return ''
       }
-    },
-    formatDescription(description) {
-      if (description) return description.replace(/\n/g, '<br />')
-      return ''
     },
   },
 }

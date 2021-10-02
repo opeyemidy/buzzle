@@ -29,7 +29,7 @@ export default [
       {
         _name: 'CSidebarNavItem',
         name: 'Wallet',
-        to: '/users',
+        to: '/wallet',
         icon: 'cil-user',
       },
     ],

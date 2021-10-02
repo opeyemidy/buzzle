@@ -2,6 +2,7 @@
   <div class="content" :class="{ active: isActive }">
     <span>
       <div class="content-overlay"></div>
+      <!-- <v-lazy-image class="content-image" :src="image" /> -->
       <img class="content-image" :src="image" />
       <div class="content-details fadeIn-bottom">
         <h3 class="content-title">{{ title }}</h3>
@@ -12,7 +13,11 @@
 </template>
 
 <script>
+// import VLazyImage from 'v-lazy-image/v2/v-lazy-image.es'
 export default {
+  components: {
+    // VLazyImage,
+  },
   props: {
     title: {
       type: String,

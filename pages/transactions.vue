@@ -1,6 +1,6 @@
 <template>
   <CRow>
-    <page-loader v-if="true" />
+    <page-loader v-if="$fetchState.pending" />
     <CCol v-else col="12">
       <CCard>
         <CCardHeader> Transactions </CCardHeader>
@@ -21,6 +21,16 @@
             <template #cardId="data">
               <td>
                 {{ data.item.cardId.name }}
+              </td>
+            </template>
+            <template #amount="data">
+              <td>
+                {{ toReadableAmount(data.item.amount) }}
+              </td>
+            </template>
+            <template #price="data">
+              <td>
+                {{ toReadableAmount(data.item.price) }}
               </td>
             </template>
             <template #status="data">
@@ -60,6 +70,26 @@
                       <img :src="image" width="100%" alt="card image" />
                     </CCol>
                   </CRow>
+                  <CRow>
+                    <CCol col="12">
+                      <!-- eslint-disable -->
+                      <p
+                        class="text-center my-5"
+                        v-if="item.remark"
+                        v-html="
+                          '<b>Remark:</b> ' + formatDescription(item.remark)
+                        "
+                      ></p>
+                      <p
+                        v-if="item.adminRemark"
+                        class="text-center mt-5"
+                        v-html="
+                          '<b>Admin Remark:</b> ' +
+                          formatDescription(item.adminRemark)
+                        "
+                      ></p>
+                    </CCol>
+                  </CRow>
                   <!-- </CMedia> -->
                 </CCardBody>
               </CCollapse>
@@ -91,11 +121,11 @@ export default {
       }),
       collapseDuration: 0,
       fields: [
-        { key: 'cardId', label: 'Card', _classes: 'font-weight-bold' },
+        { key: 'cardId', label: 'Card' },
         { key: 'currency' },
         { key: 'price' },
         { key: 'rate' },
-        { key: 'amount' },
+        { key: 'amount', label: 'Amount(₦)' },
         { key: 'status' },
         { key: 'card_images' },
       ],
@@ -118,12 +148,25 @@ export default {
     this.totalResults = totalResults
     this.limit = limit
   },
+  head() {
+    return {
+      title: 'Transactions — Buzzle',
+      meta: [
+        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'My custom description',
+        },
+      ],
+    }
+  },
   watch: {
     $route: {
       immediate: true,
       handler(route) {
         if (Object.keys(route.query).length !== 0) {
-          this.limit = parseInt(route.query.limit)
+          this.limit = parseInt(route.query.limit) > 20 || 20
           this.page = parseInt(route.query.page)
           this.$fetch()
         }
@@ -166,6 +209,9 @@ export default {
       this.$nextTick(() => {
         this.collapseDuration = 0
       })
+    },
+    toReadableAmount(amount) {
+      return amount.toLocaleString(undefined, { minimumFractionDigits: 2 })
     },
   },
 }

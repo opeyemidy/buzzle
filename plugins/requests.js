@@ -12,7 +12,6 @@ export default ({ app, $axios, redirect }, inject) => {
   }
 
   const cardEndpoint = endpoints.cards
-  const denominationsEndpoint = endpoints.denominations
   const transactionsEndpoint = endpoints.transactions
 
   const register = async (data) => await $axios.$post(endpoints.register, data)
@@ -35,21 +34,12 @@ export default ({ app, $axios, redirect }, inject) => {
     setMultipartData()
     return await $axios.$patch(cardEndpoint + '/' + id, data)
   }
-  const addDenomination = async (data) => {
-    return await $axios.$post(denominationsEndpoint, data)
-  }
-  const updateDenomination = async (id, data) => {
-    return await $axios.$patch(denominationsEndpoint + '/' + id, data)
-  }
-  const deleteDenomination = async (id) => {
-    return await $axios.$delete(denominationsEndpoint + '/' + id)
-  }
   const createTransaction = async (data) => {
     return await $axios.$post(transactionsEndpoint, data)
   }
   const getTransactions = async (query = {}) => {
     const { page, limit } = query
-    let data = `?limit=${limit || 10}`
+    let data = `?limit=${limit || 20}`
     if (page) data = `${data}&page=${page}`
     if (Object.keys(query).length === 0) data = ''
     return await $axios.$get(transactionsEndpoint + data)
@@ -64,9 +54,6 @@ export default ({ app, $axios, redirect }, inject) => {
     getCards,
     getCard,
     updateCard,
-    addDenomination,
-    updateDenomination,
-    deleteDenomination,
     createTransaction,
     getTransactions,
   })

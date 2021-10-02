@@ -6,11 +6,11 @@
 <style scoped>
 .page-cover {
   width: calc(100% - 256px);
-  left: 256px;
+  left: 256px !important;
 }
 @media only screen and (max-width: 990px) {
   .page-cover {
-    left: 0;
+    left: 0 !important;
     width: 100%;
   }
 }
