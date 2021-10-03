@@ -75,6 +75,9 @@ export default {
       if (description) return description.replace(/\n/g, '<br />')
       return ''
     },
+    toReadableAmount(amount) {
+      return amount.toLocaleString(undefined, { minimumFractionDigits: 2 })
+    },
   },
 }
 

@@ -13,6 +13,7 @@ export default ({ app, $axios, redirect }, inject) => {
 
   const cardEndpoint = endpoints.cards
   const transactionsEndpoint = endpoints.transactions
+  const walletEndpoint = endpoints.wallet
 
   const register = async (data) => await $axios.$post(endpoints.register, data)
   const forgotPassword = async (data) =>
@@ -44,8 +45,26 @@ export default ({ app, $axios, redirect }, inject) => {
     if (Object.keys(query).length === 0) data = ''
     return await $axios.$get(transactionsEndpoint + data)
   }
-
-  // Inject $hello(msg) in Vue, context and store.
+  const getWallet = async (id) => {
+    return await $axios.$get(walletEndpoint + '/' + id)
+  }
+  const setPin = async (data) => {
+    return await $axios.$post(walletEndpoint + '/pin', data)
+  }
+  const addAccount = async (data) => {
+    return await $axios.$post(walletEndpoint + '/account', data)
+  }
+  const setDefaultAccount = async (accountNumber, data) => {
+    return await $axios.$patch(
+      walletEndpoint + '/account/' + accountNumber,
+      data
+    )
+  }
+  const deleteAccount = async (accountNumber, data) => {
+    return await $axios.$delete(walletEndpoint + '/account/' + accountNumber, {
+      data,
+    })
+  }
   inject('request', {
     register,
     forgotPassword,
@@ -56,5 +75,10 @@ export default ({ app, $axios, redirect }, inject) => {
     updateCard,
     createTransaction,
     getTransactions,
+    getWallet,
+    setPin,
+    addAccount,
+    setDefaultAccount,
+    deleteAccount,
   })
 }

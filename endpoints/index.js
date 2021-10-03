@@ -7,6 +7,7 @@ const resetPassword = `${authEndpoint}/reset-password`
 const cards = baseUrl + '/cards'
 const denominations = baseUrl + '/denominations'
 const transactions = baseUrl + '/transactions'
+const wallet = baseUrl + '/wallet'
 export default {
   register,
   forgotPassword,
@@ -14,4 +15,5 @@ export default {
   cards,
   denominations,
   transactions,
+  wallet,
 }
