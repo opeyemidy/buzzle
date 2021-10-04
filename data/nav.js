@@ -22,12 +22,6 @@ export default [
       },
       {
         _name: 'CSidebarNavItem',
-        name: 'Users',
-        to: '/users',
-        icon: 'cil-user',
-      },
-      {
-        _name: 'CSidebarNavItem',
         name: 'Wallet',
         to: '/wallet',
         icon: 'cil-user',

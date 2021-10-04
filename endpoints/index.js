@@ -8,6 +8,7 @@ const cards = baseUrl + '/cards'
 const denominations = baseUrl + '/denominations'
 const transactions = baseUrl + '/transactions'
 const wallet = baseUrl + '/wallet'
+const payments = baseUrl + '/payments'
 export default {
   register,
   forgotPassword,
@@ -16,4 +17,5 @@ export default {
   denominations,
   transactions,
   wallet,
+  payments,
 }

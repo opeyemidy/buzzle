@@ -2,123 +2,119 @@
   <CRow>
     <page-loader v-if="$fetchState.pending" />
     <CCol v-else col="12">
-      <CCard>
-        <CCardHeader> Transactions </CCardHeader>
-        <CCardBody>
-          <CDataTable
-            hover
-            :table-filter="false"
-            sorter
-            :striped="false"
-            :items="transactions"
-            :fields="fields"
-            :items-per-page="limit"
-            :clickable-rows="false"
-            :active-page="page"
-            :pagination="{ doubleArrows: false, align: 'center' }"
-            @row-clicked="() => null || rowClicked"
-          >
-            <template #cardId="data">
-              <td>
-                {{ data.item.cardId.name }}
-              </td>
-            </template>
-            <template #amount="data">
-              <td>
-                {{ toReadableAmount(data.item.amount) }}
-              </td>
-            </template>
-            <template #price="data">
-              <td>
-                {{ toReadableAmount(data.item.price) }}
-              </td>
-            </template>
-            <template #status="data">
-              <td>
-                <CBadge :color="getBadge(data.item.status)">
-                  {{ data.item.status }}
-                </CBadge>
-              </td>
-            </template>
-            <template #card_images="{ item, index }">
-              <td class="py-2">
-                <CButton
-                  color="primary"
-                  variant="outline"
-                  square
-                  size="sm"
-                  @click="toggleDetails(item, index)"
-                >
-                  {{ Boolean(item._toggled) ? 'Hide' : 'Show' }}
-                </CButton>
-              </td>
-            </template>
-            <template #details="{ item }">
-              <CCollapse
-                :show="Boolean(item._toggled)"
-                :duration="collapseDuration"
+      <CCard class="px-3 pt-3 pb-0">
+        <h6>Transactions</h6>
+        <!-- <CCardHeader> Transactions </CCardHeader> -->
+        <!-- <CCardBody> -->
+        <CDataTable
+          hover
+          :table-filter="false"
+          sorter
+          :striped="false"
+          :items="transactions"
+          :fields="fields"
+          :items-per-page="limit"
+          :clickable-rows="false"
+          :active-page="page"
+          :pagination="{ doubleArrows: false, align: 'center' }"
+          @row-clicked="() => null || rowClicked"
+        >
+          <template #cardId="data">
+            <td>
+              {{ data.item.cardId.name }}
+            </td>
+          </template>
+          <template #amount="data">
+            <td>
+              {{ toReadableAmount(data.item.amount) }}
+            </td>
+          </template>
+          <template #price="data">
+            <td>
+              {{ toReadableAmount(data.item.price) }}
+            </td>
+          </template>
+          <template #status="data">
+            <td>
+              <CBadge :color="getBadge(data.item.status)">
+                {{ data.item.status }}
+              </CBadge>
+            </td>
+          </template>
+          <template #card_images="{ item, index }">
+            <td class="py-2">
+              <CButton
+                color="primary"
+                variant="outline"
+                square
+                size="sm"
+                @click="toggleDetails(item, index)"
               >
-                <hr class="mt-0" />
-                <CCardBody class="pt-0">
-                  <CRow :gutters="false" class="flex-nowrap overflow-auto">
-                    <CCol
-                      v-for="image in item.images"
-                      :key="image"
-                      col="4"
-                      md="2"
-                    >
-                      <img :src="image" width="100%" alt="card image" />
-                    </CCol>
-                  </CRow>
-                  <CRow>
-                    <CCol col="12">
-                      <!-- eslint-disable -->
-                      <p
-                        class="text-center my-5"
-                        v-if="item.remark"
-                        v-html="
-                          '<b>Remark:</b> ' + formatDescription(item.remark)
-                        "
-                      ></p>
-                      <p
-                        v-if="item.adminRemark"
-                        class="text-center mt-5"
-                        v-html="
-                          '<b>Admin Remark:</b> ' +
-                          formatDescription(item.adminRemark)
-                        "
-                      ></p>
-                    </CCol>
-                  </CRow>
-                  <!-- </CMedia> -->
-                </CCardBody>
-              </CCollapse>
-            </template>
-          </CDataTable>
-          <CPagination
-            v-if="totalPages > 1"
-            class="mt-3"
-            :active-page.sync="page"
-            :pages="totalPages"
-            size="sm"
-            align="center"
-          />
-        </CCardBody>
+                {{ Boolean(item._toggled) ? 'Hide' : 'Show' }}
+              </CButton>
+            </td>
+          </template>
+          <template #details="{ item }">
+            <CCollapse
+              :show="Boolean(item._toggled)"
+              :duration="collapseDuration"
+            >
+              <hr class="mt-0" />
+              <CCardBody class="pt-0">
+                <CRow :gutters="false" class="flex-nowrap overflow-auto">
+                  <CCol
+                    v-for="image in item.images"
+                    :key="image"
+                    col="4"
+                    md="2"
+                  >
+                    <img :src="image" width="100%" alt="card image" />
+                  </CCol>
+                </CRow>
+                <CRow>
+                  <CCol col="12">
+                    <!-- eslint-disable -->
+                    <p
+                      class="text-center my-5"
+                      v-if="item.remark"
+                      v-html="
+                        '<b>Remark:</b> ' + formatDescription(item.remark)
+                      "
+                    ></p>
+                    <p
+                      v-if="item.adminRemark"
+                      class="text-center mt-5"
+                      v-html="
+                        '<b>Admin Remark:</b> ' +
+                        formatDescription(item.adminRemark)
+                      "
+                    ></p>
+                  </CCol>
+                </CRow>
+                <!-- </CMedia> -->
+              </CCardBody>
+            </CCollapse>
+          </template>
+        </CDataTable>
+        <CPagination
+          v-if="totalPages > 1"
+          class="mt-3"
+          :active-page.sync="page"
+          :pages="totalPages"
+          size="sm"
+          align="center"
+        />
+        <!-- </CCardBody> -->
       </CCard>
     </CCol>
   </CRow>
 </template>
 
 <script>
-import usersData from '~/data/tableData'
 export default {
-  name: 'Users',
+  name: 'Transactions',
   data() {
     return {
-      // items: usersData,
-      items: usersData.map((item, id) => {
-        return { ...item, id }
-      }),
       collapseDuration: 0,
       fields: [
         { key: 'cardId', label: 'Card' },

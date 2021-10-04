@@ -92,12 +92,11 @@
         <ValidationProvider
           v-slot="{ errors }"
           name="price of uploaded cards"
-          rules="required"
+          rules="required|money"
         >
           <CInput
             label="Price"
             placeholder="Price"
-            type="number"
             :description="`the worth of cards in ${setThresholdAmount(
               activeCurrency
             )}`"
@@ -107,6 +106,7 @@
           />
         </ValidationProvider>
         <CTextarea
+          v-model="remark"
           label="Remark"
           description="If you have extra info to tell us, you could write it here! If not, ignore it!"
           placeholder="Additional Info about card"
@@ -176,7 +176,7 @@ export default {
       page: 1,
       totalPages: 0,
       totalResults: 0,
-      limit: 10,
+      limit: 30,
       activeCard: '',
       activeCurrency: '',
       thresholdHeaders: [
@@ -248,11 +248,23 @@ export default {
             bodyFormData.append('images', file) // appending every file to formdata
           }
         }
-        if (this.description) bodyFormData.append('remark', this.remark)
+        if (this.remark) bodyFormData.append('remark', this.remark)
         const response = await this.$request.createTransaction(bodyFormData)
         this.isLoading = false
         if (response) {
           this.$vToastify.success('Transaction is in progress')
+          const preview = this.$refs.preview
+          while (preview.firstChild) {
+            preview.removeChild(preview.firstChild)
+          }
+          this.submitTriggered = false
+          this.$refs.form.reset()
+          this.activeCard =
+            this.activeCurrency =
+            this.price =
+            this.remark =
+            this.selectedFile =
+              ''
         }
       } catch ({ response }) {
         this.isLoading = false

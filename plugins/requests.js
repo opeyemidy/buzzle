@@ -6,7 +6,7 @@ import endpoints from '~/endpoints'
 //     }
 //   })
 // }
-export default ({ app, $axios, redirect }, inject) => {
+export default ({ $axios }, inject) => {
   const setMultipartData = () => {
     return $axios.setHeader('Content-Type', 'multipart/form-data')
   }
@@ -14,6 +14,7 @@ export default ({ app, $axios, redirect }, inject) => {
   const cardEndpoint = endpoints.cards
   const transactionsEndpoint = endpoints.transactions
   const walletEndpoint = endpoints.wallet
+  const paymentsEndpoint = endpoints.payments
 
   const register = async (data) => await $axios.$post(endpoints.register, data)
   const forgotPassword = async (data) =>
@@ -40,7 +41,7 @@ export default ({ app, $axios, redirect }, inject) => {
   }
   const getTransactions = async (query = {}) => {
     const { page, limit } = query
-    let data = `?limit=${limit || 20}`
+    let data = `?limit=${limit || 10}`
     if (page) data = `${data}&page=${page}`
     if (Object.keys(query).length === 0) data = ''
     return await $axios.$get(transactionsEndpoint + data)
@@ -65,6 +66,16 @@ export default ({ app, $axios, redirect }, inject) => {
       data,
     })
   }
+  const requestPayment = async (data) => {
+    return await $axios.$post(paymentsEndpoint, data)
+  }
+  const getPayments = async (query = {}) => {
+    const { page, limit } = query
+    let data = `?limit=${limit || 10}`
+    if (page) data = `${data}&page=${page}`
+    if (Object.keys(query).length === 0) data = ''
+    return await $axios.$get(paymentsEndpoint + data)
+  }
   inject('request', {
     register,
     forgotPassword,
@@ -80,5 +91,7 @@ export default ({ app, $axios, redirect }, inject) => {
     addAccount,
     setDefaultAccount,
     deleteAccount,
+    requestPayment,
+    getPayments,
   })
 }

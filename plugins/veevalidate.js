@@ -9,6 +9,7 @@ import en from 'vee-validate/dist/locale/en.json'
 import * as rules from 'vee-validate/dist/rules'
 const paswwordRegEx =
   /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,})/
+const moneyRegEx = /^-?[0-9]+(?:\.[0-9]{1,2})?$/
 
 //   ^	The password string will start this way
 // (?=.*[a-z])	The string must contain at least 1 lowercase alphabetical character
@@ -26,6 +27,10 @@ extend('strong', {
   validate: (value) => paswwordRegEx.test(value),
   message:
     'at least 1 lowercase, 1 uppercase, 1 number one special character and must be eight characters or longer is required',
+})
+extend('money', {
+  validate: (value) => moneyRegEx.test(value),
+  message: 'price can only numbers or numbers ending with 2 decimal points',
 })
 
 // install rules and localization

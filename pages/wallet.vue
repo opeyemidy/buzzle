@@ -6,16 +6,26 @@
         <CCard>
           <CCardBody>
             <CRow class="justify-content-between">
-              <CCol md="6">
+              <CCol md="4">
                 <h3 class="success">
-                  <p class="m-0" style="font-size: 0.8rem">Wallet Balance</p>
+                  <p class="m-0" style="font-size: 0.8rem">Balance</p>
                   ₦{{ toReadableAmount(balance) }}
                 </h3>
               </CCol>
 
-              <CCol md="6" class="d-flex flex-md-row-reverse">
+              <CCol
+                v-if="onHold > 0"
+                md="4"
+                class="d-flex justify-content-md-center"
+              >
+                <h3>
+                  <p class="m-0" style="font-size: 0.8rem">Processing</p>
+                  ₦{{ toReadableAmount(onHold) }}
+                </h3>
+              </CCol>
+              <CCol md="4" class="d-flex flex-md-row-reverse">
                 <h3 class="danger">
-                  <p class="m-0" style="font-size: 0.8rem">Total Withdrawal</p>
+                  <p class="m-0" style="font-size: 0.8rem">Withdraw</p>
                   ₦{{ toReadableAmount(withdraw) }}
                 </h3>
               </CCol>
@@ -30,15 +40,33 @@
               must be at least One bank account below and must be set to default
               before payment can be processed
             </p>
-            <CForm>
+            <CForm @submit.prevent="requestPayment">
               <CRow>
                 <CCol col="12" sm="6">
-                  <CInput label="Amount" placeholder="Amount to withdraw" />
+                  <CInput
+                    v-model="paymentData.amount"
+                    label="Amount"
+                    placeholder="Amount to withdraw"
+                    required
+                    type="number"
+                  />
                 </CCol>
                 <CCol col="12" sm="6">
-                  <CInput label="Pin" placeholder="wallet pin">
+                  <CInput
+                    v-model="paymentData.pin"
+                    label="Pin"
+                    type="password"
+                    placeholder="wallet pin"
+                    required
+                  >
                     <template #append>
-                      <CButton type="submit" color="primary"> submit</CButton>
+                      <CButton
+                        :disabled="requesting"
+                        type="submit"
+                        color="primary"
+                      >
+                        {{ requesting ? 'requesting' : 'submit' }}</CButton
+                      >
                     </template>
                   </CInput>
                 </CCol>
@@ -62,7 +90,7 @@
           </CCardHeader>
           <CCollapse :show="formCollapsed">
             <CCardBody>
-              <ValidationObserver ref="form">
+              <ValidationObserver ref="addAccountForm">
                 <CForm @submit.prevent="addBankAccount">
                   <CRow>
                     <CCol sm="6">
@@ -278,9 +306,11 @@ export default {
         confirmPin: '',
         password: '',
       },
+
       accounts: [],
       balance: 0,
       withdraw: 0,
+      onHold: 0,
       pinIsSet: false,
       collapseDuration: 0,
       fields: [
@@ -296,14 +326,20 @@ export default {
       selectedAccount: '',
       pin: '',
       isConfirming: false,
+      paymentData: {
+        amount: '',
+        pin: '',
+      },
+      requesting: false,
     }
   },
   async fetch() {
-    const { accounts, balance, withdraw, pinIsSet } =
+    const { accounts, balance, withdraw, onHold, pinIsSet } =
       await this.$request.getWallet(this.$auth.user.id)
     this.accounts = accounts
     this.balance = balance
     this.withdraw = withdraw
+    this.onHold = onHold
     this.pinIsSet = pinIsSet
   },
   head() {
@@ -323,7 +359,7 @@ export default {
   methods: {
     addBankAccount() {
       this.submitTriggered = true
-      this.$refs.form.validate().then(async (success) => {
+      this.$refs.addAccountForm.validate().then(async (success) => {
         if (!success) {
           return
         }
@@ -341,7 +377,6 @@ export default {
             this.$refs.form.reset()
           }
         } catch ({ response }) {
-          console.log(response)
           this.isLoading = false
           this.$vToastify.error(response.data.message)
         }
@@ -356,7 +391,9 @@ export default {
         try {
           const response = await this.$request.setPin(this.setPinData)
           if (!response) {
+            this.pinIsSet = true
             this.$vToastify.success('Pin set successfully')
+            this.submitTriggered = false
           }
         } catch ({ response }) {
           this.$vToastify.error(response.data.message)
@@ -404,6 +441,26 @@ export default {
       this.selectedAccount = ''
       this.pin = ''
       this.showPinModal = false
+    },
+    async requestPayment() {
+      this.requesting = true
+      try {
+        const response = await this.$request.requestPayment(this.paymentData)
+
+        this.requesting = false
+        if (response) {
+          this.$vToastify.success('Payment is being processed')
+          this.balance = this.balance - this.paymentData.amount
+          this.onHold =
+            parseFloat(this.onHold) + parseFloat(this.paymentData.amount)
+          for (const property in this.paymentData) {
+            this.paymentData[property] = ''
+          }
+        }
+      } catch ({ response }) {
+        this.requesting = false
+        this.$vToastify.error(response.data.message)
+      }
     },
   },
 }
