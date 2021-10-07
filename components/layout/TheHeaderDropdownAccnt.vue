@@ -7,49 +7,21 @@
   >
     <template #toggler>
       <CHeaderNavLink>
-        <avatar :username="username" :size="32"></avatar>
-        <!-- <div class="c-avatar">
-          <img src="/img/avatars/6.jpg" class="c-avatar-img" />
-        </div> -->
+        <avatar
+          v-if="!$auth.user.avatar"
+          :username="username"
+          :size="32"
+        ></avatar>
+        <div v-else class="c-avatar">
+          <img :src="$auth.user.avatar" class="c-avatar-img" />
+        </div>
       </CHeaderNavLink>
     </template>
-    <CDropdownHeader tag="div" class="text-center" color="light">
-      <strong>Account</strong>
-    </CDropdownHeader>
-    <CDropdownItem>
-      <CIcon name="cil-bell" /> Updates
-      <CBadge color="info" class="mfs-auto">{{ itemsCount }}</CBadge>
-    </CDropdownItem>
-    <CDropdownItem>
-      <CIcon name="cil-envelope-open" /> Messages
-      <CBadge color="success" class="mfs-auto">{{ itemsCount }}</CBadge>
-    </CDropdownItem>
-    <CDropdownItem>
-      <CIcon name="cil-task" /> Tasks
-      <CBadge color="danger" class="mfs-auto">{{ itemsCount }}</CBadge>
-    </CDropdownItem>
-    <CDropdownItem>
-      <CIcon name="cil-comment-square" /> Comments
-      <CBadge color="warning" class="mfs-auto">{{ itemsCount }}</CBadge>
-    </CDropdownItem>
     <CDropdownHeader tag="div" class="text-center" color="light">
       <strong>Settings</strong>
     </CDropdownHeader>
     <CDropdownItem to="/profile">
       <CIcon name="cil-user" /> Profile
-    </CDropdownItem>
-    <CDropdownItem> <CIcon name="cil-settings" /> Settings </CDropdownItem>
-    <CDropdownItem>
-      <CIcon name="cil-dollar" /> Payments
-      <CBadge color="secondary" class="mfs-auto">{{ itemsCount }}</CBadge>
-    </CDropdownItem>
-    <CDropdownItem>
-      <CIcon name="cil-file" /> Projects
-      <CBadge color="primary" class="mfs-auto">{{ itemsCount }}</CBadge>
-    </CDropdownItem>
-    <CDropdownDivider />
-    <CDropdownItem>
-      <CIcon name="cil-shield-alt" /> Lock Account
     </CDropdownItem>
     <CDropdownItem @click="logout">
       <CIcon name="cil-lock-locked" /> Logout
@@ -71,8 +43,14 @@ export default {
     }
   },
   methods: {
-    logout() {
-      this.$auth.logout()
+    async logout() {
+      await this.$auth.logout({
+        data: {
+          refreshToken: this.$auth.strategy.refreshToken
+            .get()
+            .replace('Bearer ', ''),
+        },
+      })
     },
   },
 }

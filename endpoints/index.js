@@ -1,9 +1,12 @@
 import baseUrl from './baseUrl'
 const authEndpoint = baseUrl + '/auth'
 const register = `${authEndpoint}/register`
+const sendVerifyEmail = `${authEndpoint}/send-verification-email`
+const verifyEmail = `${authEndpoint}/verify-email`
 const forgotPassword = `${authEndpoint}/forgot-password`
 const resetPassword = `${authEndpoint}/reset-password`
-// const userEndpoint = baseUrl + '/users'
+const changePassword = `${authEndpoint}/update-password`
+const users = baseUrl + '/users'
 const cards = baseUrl + '/cards'
 const denominations = baseUrl + '/denominations'
 const transactions = baseUrl + '/transactions'
@@ -18,4 +21,8 @@ export default {
   transactions,
   wallet,
   payments,
+  sendVerifyEmail,
+  verifyEmail,
+  users,
+  changePassword,
 }

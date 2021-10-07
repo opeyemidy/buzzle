@@ -88,11 +88,10 @@
             </CCardBody>
             <CCardFooter class="p-4">
               <CRow>
-                <CCol col="6">
-                  <CButton block color="facebook"> Facebook </CButton>
-                </CCol>
-                <CCol col="6">
-                  <CButton block color="twitter"> Twitter </CButton>
+                <CCol col="12">
+                 <nuxt-link to="/login">
+                    Already registered? Login
+                  </nuxt-link>
                 </CCol>
               </CRow>
             </CCardFooter>

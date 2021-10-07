@@ -1,6 +1,22 @@
 <template>
   <div class="container-fluid">
     <!-- <WidgetsDropdown /> -->
+    <!-- <button @click="$auth.refreshTokens()">refreshToken</button> -->
+    <CAlert
+      v-if="!verified"
+      color="primary"
+      class="text-monospace"
+      close-button
+    >
+      Please click
+      <CButton
+        class="p-0 text-primary"
+        :disabled="isVerifying"
+        @click="sendVerifyEmail"
+        >here</CButton
+      >
+      to verify your email
+    </CAlert>
     <CRow class="flex-nowrap overflow-auto px-2 align-items-center">
       <CCol v-if="$fetchState.pending" style="height: 220px">
         <CElementCover :opacity="0.1" />
@@ -15,6 +31,7 @@
         @click="setActive(card.id)"
       >
         <gift-card
+          :id="card.id"
           :title="card.name"
           :is-active="activeCard === card.id"
           :image="
@@ -194,6 +211,8 @@ export default {
       thresholdItems: [],
       denominationItem: {},
       price: '',
+      isVerifying: false,
+      verified: this.$auth.user.isEmailVerified,
     }
   },
   async fetch() {
@@ -227,6 +246,20 @@ export default {
     },
   },
   methods: {
+    async sendVerifyEmail() {
+      this.isVerifying = true
+      try {
+        const response = await this.$request.sendVerifyEmail()
+        this.isVerifying = false
+        if (!response) {
+          this.$vToastify.success('verification email sent')
+          this.verified = true
+        }
+      } catch ({ response }) {
+        this.isVerifying = false
+        this.$vToastify.error(response.data.message)
+      }
+    },
     onSubmit() {
       this.submitTriggered = true
       this.$refs.form.validate().then((success) => {
@@ -320,6 +353,12 @@ export default {
       this.changeCurrency()
     },
     changeCurrency() {
+      const element = document.getElementById(this.cards[7].id)
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'nearest',
+      })
       this.denominationItem = this.cardItem.denominations.find(
         (denomination) => denomination.currency === this.activeCurrency
       )

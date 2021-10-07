@@ -8,11 +8,12 @@
             <nav class="main-nav">
               <!-- ***** Logo Start ***** -->
               <NuxtLink to="/" class="logo">
-                <img src="~/assets/images/logo.png" alt="Softy Pinko" />
+              <h4 style="color: #000">BUZZLE</h4>
+                <!-- <img src="~/assets/images/logo.png" alt="BUZZLE" /> -->
               </NuxtLink>
               <!-- ***** Logo End ***** -->
               <!-- ***** Menu Start ***** -->
-              <ul class="nav">
+              <ul class="nav" :class="active ? 'd-block' : 'd-none'">
                 <li v-for="(link, i) in links" :key="i">
                   <NuxtLink
                     :to="link.to"
@@ -20,8 +21,34 @@
                     >{{ link.name }}</NuxtLink
                   >
                 </li>
+                <li v-if="!$auth.user">
+                  <NuxtLink
+
+                    to="/login"
+
+                    >Login</NuxtLink
+                  >
+                <li v-if="!$auth.user" >
+                  <NuxtLink
+                    to="/register"
+
+                    >Register</NuxtLink
+                  >
+                </li>
+                <li v-if="$auth.user" >
+                  <NuxtLink
+                    to="/dashboard"
+
+                    >Dashboard</NuxtLink
+                  >
+                </li>
+
               </ul>
-              <a href="#" class="menu-trigger">
+              <a
+                class="menu-trigger"
+                :class="{ active }"
+                @click="active = !active"
+              >
                 <span>Menu</span>
               </a>
               <!-- ***** Menu End ***** -->
@@ -47,14 +74,12 @@
               "
             >
               <h1>
-                We provide the best <strong>strategy</strong><br />to grow up
-                your <strong>business</strong>
+                Trusted and Reliable website to trade your <strong>gift cards</strong>
               </h1>
               <p>
-                Softy Pinko is a professional Bootstrap 4.0 theme designed by
-                Template Mo for your company at absolutely free of charge
+                An awesome place to trade securely with no worries or delay. It is perfectly built for you.
               </p>
-              <NuxtLink to="#features" class="main-button-slider"
+              <NuxtLink to="/register" class="main-button-slider"
                 >Discover More</NuxtLink
               >
             </div>
@@ -82,10 +107,9 @@
                       ><img src="~/assets/images/featured-item-01.png" alt=""
                     /></i>
                   </div>
-                  <h5 class="features-title">Modern Strategy</h5>
+                  <h5 class="features-title">FAST PAYOUT</h5>
                   <p>
-                    Customize anything in this template to fit your website
-                    needs
+                    Our payment is fast on every withdrawal you make on our platform
                   </p>
                 </div>
               </div>
@@ -102,8 +126,8 @@
                       ><img src="~/assets/images/featured-item-01.png" alt=""
                     /></i>
                   </div>
-                  <h5 class="features-title">Best Relationship</h5>
-                  <p>Contact us immediately if you have a question in mind</p>
+                  <h5 class="features-title">ROUND THE CLOCK ACCESS</h5>
+                  <p>We are online 24/7 to do business and help you make money round-the-clock</p>
                 </div>
               </div>
               <!-- ***** Features Small Item End ***** -->
@@ -119,9 +143,9 @@
                       ><img src="~/assets/images/featured-item-01.png" alt=""
                     /></i>
                   </div>
-                  <h5 class="features-title">Ultimate Marketing</h5>
+                  <h5 class="features-title">SECURE TRADING</h5>
                   <p>
-                    You just need to tell your friends about our free templates
+                    We handle millions in transactions daily. Trust us to pay you every single time.
                   </p>
                 </div>
               </div>
@@ -156,13 +180,11 @@
             "
           >
             <div class="left-heading">
-              <h2 class="section-title">Let’s discuss about you project</h2>
+              <h2 class="section-title">NO EXTRA CHARGES</h2>
             </div>
             <div class="left-text">
               <p>
-                Nullam sit amet purus libero. Etiam ullamcorper nisl ut augue
-                blandit, at finibus leo efficitur. Nam gravida purus non sapien
-                auctor, ut aliquam magna ullamcorper.
+                We charge nothing extra for transactions. You can only get paid according to our fixed rates on the platform.
               </p>
             </div>
           </div>
@@ -189,15 +211,12 @@
           >
             <div class="left-heading">
               <h2 class="section-title">
-                We can help you to grow your business
+                Track your transactions and payments
               </h2>
             </div>
             <div class="left-text">
               <p>
-                Aenean pretium, ipsum et porttitor auctor, metus ipsum iaculis
-                nisi, a bibendum lectus libero vitae urna. Sed id leo eu dolor
-                luctus congue sed eget ipsum. Nunc nec luctus libero. Etiam quis
-                dolor elit.
+                you always have access to check your transaction and payment history from the day you make your first transaction
               </p>
             </div>
           </div>
@@ -228,10 +247,9 @@
           <div class="row">
             <div class="offset-lg-3 col-lg-6">
               <div class="info">
-                <h1>Work Process</h1>
+                <h1>Dealing Process</h1>
                 <p>
-                  Aenean nec tempor metus. Maecenas ligula dolor, commodo in
-                  imperdiet interdum, vehicula ut ex. Donec ante diam.
+                  As member you are going to be dealing with us following the process below
                 </p>
               </div>
             </div>
@@ -239,58 +257,40 @@
 
           <!-- ***** Mini Box Start ***** -->
           <div class="row">
-            <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
               <NuxtLink to="/" class="mini-box">
                 <i
                   ><img src="~/assets/images/work-process-item-01.png" alt=""
                 /></i>
-                <strong>Get Ideas</strong>
-                <span>Godard pabst prism fam cliche.</span>
+                <strong>Create Account</strong>
+                <span>Sign Up on our website with your valid details and add your bank account or mobile money number.</span>
               </NuxtLink>
             </div>
-            <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
               <NuxtLink to="/" class="mini-box">
                 <i
                   ><img src="~/assets/images/work-process-item-01.png" alt=""
                 /></i>
-                <strong>Sketch Up</strong>
-                <span>Godard pabst prism fam cliche.</span>
+                <strong>Begin Trade</strong>
+                <span>You can start a trade by simply clicking on Sell GiftCards on the dashboard menu. Select the gift card you want to sell and upload it.</span>
               </NuxtLink>
             </div>
-            <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
               <NuxtLink to="/" class="mini-box">
                 <i
                   ><img src="~/assets/images/work-process-item-01.png" alt=""
                 /></i>
-                <strong>Discuss</strong>
-                <span>Godard pabst prism fam cliche.</span>
+                <strong>Wait For Confirmation</strong>
+                <span>Wait for your transaction to be processed, this usually takes less than 5 minutes. Once your card has been redeemed, your wallet will be credited immediately.</span>
               </NuxtLink>
             </div>
-            <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
               <NuxtLink to="/" class="mini-box">
                 <i
                   ><img src="~/assets/images/work-process-item-01.png" alt=""
                 /></i>
-                <strong>Revise</strong>
-                <span>Godard pabst prism fam cliche.</span>
-              </NuxtLink>
-            </div>
-            <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-              <NuxtLink to="/" class="mini-box">
-                <i
-                  ><img src="~/assets/images/work-process-item-01.png" alt=""
-                /></i>
-                <strong>Approve</strong>
-                <span>Godard pabst prism fam cliche.</span>
-              </NuxtLink>
-            </div>
-            <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-              <NuxtLink to="/" class="mini-box">
-                <i
-                  ><img src="~/assets/images/work-process-item-01.png" alt=""
-                /></i>
-                <strong>Launch</strong>
-                <span>Godard pabst prism fam cliche.</span>
+                <strong>Withdraw Funds</strong>
+                <span>You can withdraw your funds at anytime you want with no hassle. Pretty easy right? Now sign up and begin trading like a boss.</span>
               </NuxtLink>
             </div>
           </div>
@@ -301,10 +301,10 @@
     <!-- ***** Home Parallax End ***** -->
 
     <!-- ***** Testimonials Start ***** -->
-    <section id="testimonials" class="section">
-      <div class="container">
+    <!-- <section id="testimonials" class="section">
+      <div class="container"> -->
         <!-- ***** Section Title Start ***** -->
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-lg-12">
             <div class="center-heading">
               <h2 class="section-title">What do they say?</h2>
@@ -319,12 +319,12 @@
               </p>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- ***** Section Title End ***** -->
 
-        <div class="row">
+        <!-- <div class="row"> -->
           <!-- ***** Testimonials Item Start ***** -->
-          <div class="col-lg-4 col-md-6 col-sm-12">
+          <!-- <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="team-item">
               <div class="team-content">
                 <i><img src="~/assets/images/testimonial-icon.png" alt="" /></i>
@@ -341,11 +341,11 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- ***** Testimonials Item End ***** -->
 
           <!-- ***** Testimonials Item Start ***** -->
-          <div class="col-lg-4 col-md-6 col-sm-12">
+          <!-- <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="team-item">
               <div class="team-content">
                 <i><img src="~/assets/images/testimonial-icon.png" alt="" /></i>
@@ -363,11 +363,11 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- ***** Testimonials Item End ***** -->
 
           <!-- ***** Testimonials Item Start ***** -->
-          <div class="col-lg-4 col-md-6 col-sm-12">
+          <!-- <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="team-item">
               <div class="team-content">
                 <i><img src="~/assets/images/testimonial-icon.png" alt="" /></i>
@@ -385,18 +385,18 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- ***** Testimonials Item End ***** -->
-        </div>
-      </div>
-    </section>
+        <!-- </div> -->
+      <!-- </div>
+    </section> -->
     <!-- ***** Testimonials End ***** -->
 
     <!-- ***** Pricing Plans Start ***** -->
-    <section id="pricing-plans" class="section colored">
-      <div class="container">
+    <!-- <section id="pricing-plans" class="section colored">
+      <div class="container"> -->
         <!-- ***** Section Title Start ***** -->
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-lg-12">
             <div class="center-heading">
               <h2 class="section-title">Pricing Plans</h2>
@@ -410,12 +410,12 @@
               </p>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- ***** Section Title End ***** -->
 
-        <div class="row">
+        <!-- <div class="row"> -->
           <!-- ***** Pricing Item Start ***** -->
-          <div
+          <!-- <div
             class="col-lg-4 col-md-6 col-sm-12"
             data-scroll-reveal="enter bottom move 50px over 0.6s after 0.2s"
           >
@@ -442,11 +442,11 @@
                 <NuxtLink to="/" class="main-button">Purchase Now</NuxtLink>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- ***** Pricing Item End ***** -->
 
           <!-- ***** Pricing Item Start ***** -->
-          <div
+          <!-- <div
             class="col-lg-4 col-md-6 col-sm-12"
             data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s"
           >
@@ -473,11 +473,11 @@
                 <NuxtLink to="/" class="main-button">Purchase Now</NuxtLink>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- ***** Pricing Item End ***** -->
 
           <!-- ***** Pricing Item Start ***** -->
-          <div
+          <!-- <div
             class="col-lg-4 col-md-6 col-sm-12"
             data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s"
           >
@@ -504,11 +504,11 @@
                 <NuxtLink to="/" class="main-button">Purchase Now</NuxtLink>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- ***** Pricing Item End ***** -->
-        </div>
+        <!-- </div>
       </div>
-    </section>
+    </section> -->
     <!-- ***** Pricing Plans End ***** -->
 
     <!-- ***** Counter Parallax Start ***** -->
@@ -518,26 +518,26 @@
           <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-12">
               <div class="count-item decoration-bottom">
-                <strong>126</strong>
-                <span>Projects</span>
+                <strong>22+</strong>
+                <span>Active Cards</span>
               </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12">
               <div class="count-item decoration-top">
-                <strong>63</strong>
+                <strong>300+</strong>
                 <span>Happy Clients</span>
               </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12">
               <div class="count-item decoration-bottom">
-                <strong>18</strong>
-                <span>Awards Wins</span>
+                <strong>1000+</strong>
+                <span>Transactions</span>
               </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12">
               <div class="count-item">
-                <strong>27</strong>
-                <span>Countries</span>
+                <strong>1M+</strong>
+                <span>Payments</span>
               </div>
             </div>
           </div>
@@ -547,10 +547,10 @@
     <!-- ***** Counter Parallax End ***** -->
 
     <!-- ***** Blog Start ***** -->
-    <section id="blog" class="section">
-      <div class="container">
+    <!-- <section id="blog" class="section">
+      <div class="container"> -->
         <!-- ***** Section Title Start ***** -->
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-lg-12">
             <div class="center-heading">
               <h2 class="section-title">Blog Entries</h2>
@@ -565,10 +565,10 @@
               </p>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- ***** Section Title End ***** -->
 
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="blog-post-thumb">
               <div class="img">
@@ -625,14 +625,14 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- ***** Blog End ***** -->
 
     <!-- ***** Contact Us Start ***** -->
-    <section id="contact-us" class="section colored">
-      <div class="container">
+    <!-- <section id="contact-us" class="section colored"> -->
+      <!-- <div class="container"> -->
         <!-- ***** Section Title Start ***** -->
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-lg-12">
             <div class="center-heading">
               <h2 class="section-title">Talk To Us</h2>
@@ -646,12 +646,12 @@
               </p>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- ***** Section Title End ***** -->
 
-        <div class="row">
+        <!-- <div class="row"> -->
           <!-- ***** Contact Text Start ***** -->
-          <div class="col-lg-4 col-md-6 col-sm-12">
+          <!-- <div class="col-lg-4 col-md-6 col-sm-12">
             <h5 class="margin-bottom-30">Keep in touch</h5>
             <div class="contact-text">
               <p>
@@ -659,15 +659,15 @@
                 <br />auctor non lorem
               </p>
               <p>
-                You are NOT allowed to re-distribute Softy Pinko template on any
+                You are NOT allowed to re-distribute BUZZLE template on any
                 template collection websites. Thank you.
               </p>
             </div>
-          </div>
+          </div> -->
           <!-- ***** Contact Text End ***** -->
 
           <!-- ***** Contact Form Start ***** -->
-          <div class="col-lg-8 col-md-6 col-sm-12">
+          <!-- <div class="col-lg-8 col-md-6 col-sm-12">
             <div class="contact-form">
               <form id="contact" action="" method="get">
                 <div class="row">
@@ -721,11 +721,11 @@
                 </div>
               </form>
             </div>
-          </div>
+          </div> -->
           <!-- ***** Contact Form End ***** -->
-        </div>
-      </div>
-    </section>
+        <!-- </div> -->
+      <!-- </div> -->
+    <!-- </section> -->
     <!-- ***** Contact Us End ***** -->
 
     <!-- ***** Footer Start ***** -->
@@ -755,7 +755,7 @@
         <div class="row">
           <div class="col-lg-12">
             <p class="copyright">
-              Copyright &copy; 2020 Softy Pinko Company - Design: TemplateMo
+              Copyright &copy; 2021 BUZZLE
             </p>
           </div>
         </div>
@@ -784,23 +784,24 @@ export default {
           name: 'Work Process',
           to: '#work-process',
         },
-        {
-          name: 'Testimonials',
-          to: '#testimonials',
-        },
-        {
-          name: 'Pricing Tables',
-          to: '#pricing-plans',
-        },
-        {
-          name: 'Blog Entries',
-          to: '#blog',
-        },
-        {
-          name: 'Contact Us',
-          to: '#contact-us',
-        },
+      //   {
+      //     name: 'Testimonials',
+      //     to: '#testimonials',
+      //   },
+      //   {
+      //     name: 'Pricing Tables',
+      //     to: '#pricing-plans',
+      //   },
+      //   {
+      //     name: 'Blog Entries',
+      //     to: '#blog',
+      //   },
+      //   {
+      //     name: 'Contact Us',
+      //     to: '#contact-us',
+      //   },
       ],
+      active: false,
     }
   },
   head() {
@@ -824,7 +825,33 @@ export default {
 @import url('~/assets/css/bootstrap.min.css');
 @import url('~/assets/css/font-awesome.css');
 @import url('~/assets/css/templatemo-softy-pinko.css');
-.nuxt-link-exact-active {
-  color: #ff589e;
+/* .nav .fade.in {
+  animation-name: fadeIn;
+}
+
+.nav .fade.out {
+  animation-name: fadeOut;
+} */
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(startYposition);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(endYposition);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(startYposition);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(endYposition);
+  }
 }
 </style>

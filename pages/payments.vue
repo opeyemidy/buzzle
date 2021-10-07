@@ -148,7 +148,7 @@ export default {
       immediate: true,
       handler(route) {
         if (Object.keys(route.query).length !== 0) {
-          this.limit = parseInt(route.query.limit) > 20 || 20
+          this.limit = parseInt(route.query.limit)
           this.page = parseInt(route.query.page)
           this.$fetch()
         }

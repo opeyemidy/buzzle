@@ -139,20 +139,19 @@ export default {
     async userLogin() {
       this.loading = true
       try {
-        const response = await this.$auth.loginWith('local', {
+        await this.$auth.loginWith('local', {
           data: this.login,
         })
         this.loading = false
-        if (response.status === 200) {
-          if (this.previousPage?.name && this.previousPage?.fullPath !== '/') {
-            this.$router.push(this.previousPage.fullPath)
-          } else {
-            this.$router.push('/dashboard')
-          }
+        if (this.previousPage?.name && this.previousPage?.path !== '/') {
+          this.$router.push(this.previousPage.fullPath)
+        } else {
+          this.$router.push('/dashboard')
         }
       } catch ({ response }) {
-        this.$vToastify.error(response.data.message)
         this.loading = false
+        if (response) return this.$vToastify.error(response.data.message)
+        this.$vToastify.error('server error')
       }
     },
     onSubmit() {

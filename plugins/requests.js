@@ -7,9 +7,9 @@ import endpoints from '~/endpoints'
 //   })
 // }
 export default ({ $axios }, inject) => {
-  const setMultipartData = () => {
-    return $axios.setHeader('Content-Type', 'multipart/form-data')
-  }
+  // const setMultipartData = () => {
+  //   return $axios.setHeader('Content-Type', 'multipart/form-data')
+  // }
 
   const cardEndpoint = endpoints.cards
   const transactionsEndpoint = endpoints.transactions
@@ -17,10 +17,18 @@ export default ({ $axios }, inject) => {
   const paymentsEndpoint = endpoints.payments
 
   const register = async (data) => await $axios.$post(endpoints.register, data)
+  const updateProfile = async (data) =>
+    await $axios.$patch(endpoints.users, data)
+  const sendVerifyEmail = async (data = {}) =>
+    await $axios.$post(endpoints.sendVerifyEmail, data)
+  const verifyEmail = async (token, data = {}) =>
+    await $axios.$post(`${endpoints.verifyEmail}?token=${token}`, data)
   const forgotPassword = async (data) =>
     await $axios.$post(endpoints.forgotPassword, data)
   const resetPassword = async (token, data) =>
     await $axios.$post(`${endpoints.resetPassword}?token=${token}`, data)
+  const changePassword = async (data) =>
+    await $axios.$patch(endpoints.changePassword, data)
   const createCard = async (data) => {
     return await $axios.$post(cardEndpoint, data)
   }
@@ -33,7 +41,6 @@ export default ({ $axios }, inject) => {
   }
   const getCard = async (id) => await $axios.$get(cardEndpoint + '/' + id)
   const updateCard = async (id, data) => {
-    setMultipartData()
     return await $axios.$patch(cardEndpoint + '/' + id, data)
   }
   const createTransaction = async (data) => {
@@ -93,5 +100,9 @@ export default ({ $axios }, inject) => {
     deleteAccount,
     requestPayment,
     getPayments,
+    sendVerifyEmail,
+    verifyEmail,
+    updateProfile,
+    changePassword,
   })
 }

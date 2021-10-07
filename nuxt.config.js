@@ -57,7 +57,7 @@ export default {
     redirect: {
       login: '/login',
       logout: '/login',
-      callback: false,
+      // callback: false,
       home: '/',
     },
     strategies: {
@@ -71,17 +71,18 @@ export default {
         },
         refreshToken: {
           property: 'tokens.refresh.token',
-          data: 'token',
+          data: 'refreshToken',
           // maxAge: 60 * 60 * 24 * 30,
         },
         user: {
           property: 'user',
-          // autoFetch: true,
+          // autoFetch: false,
         },
         endpoints: {
           login: { url: 'auth/login', method: 'post' },
-          logout: false, // { url: 'auth/logout', method: 'post' },
+          refresh: { url: 'auth/refresh-tokens', method: 'post' },
           user: { url: 'auth/user', method: 'get' },
+          logout: { url: 'auth/logout', method: 'post' },
         },
       },
     },

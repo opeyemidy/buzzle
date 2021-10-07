@@ -133,7 +133,9 @@ export default {
     }
   },
   async fetch() {
-    const { results, page, limit, totalPages, totalResults } =
+
+    try {
+      const { results, page, limit, totalPages, totalResults } =
       await this.$request.getTransactions({
         limit: this.limit,
         page: this.page,
@@ -143,6 +145,10 @@ export default {
     this.totalPages = totalPages
     this.totalResults = totalResults
     this.limit = limit
+    } catch ({response}) {
+      this.$nuxt.error({ statusCode:404, message:response.data.message })
+    }
+
   },
   head() {
     return {

@@ -44,7 +44,6 @@ export default {
       }
       const files = this.selectedFile
       function readAndPreview(file) {
-        console.log(Object.values(files))
         // if (files.includes(file)) return
         // Make sure `file.name` matches our extensions criteria
         if (/\.(jpe?g|png|gif)$/i.test(file.name)) {

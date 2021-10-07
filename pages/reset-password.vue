@@ -59,14 +59,6 @@
               </ValidationObserver>
             </CCardBody>
             <CCardFooter class="p-4">
-              <!-- <CRow>
-                <CCol col="6">
-                  <CButton block color="facebook"> Facebook </CButton>
-                </CCol>
-                <CCol col="6">
-                  <CButton block color="twitter"> Twitter </CButton>
-                </CCol>
-              </CRow> -->
             </CCardFooter>
           </CCard>
         </CCol>
@@ -116,7 +108,7 @@ export default {
             this.payload
           )
           if (!response) {
-            setTimeout(() => this.$router.push('/'), 3000)
+            setTimeout(() => this.$router.push('/login'), 3000)
             this.$vToastify.success(
               'Password reset successful!, you can now login with new password'
             )
