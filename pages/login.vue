@@ -143,7 +143,15 @@ export default {
           data: this.login,
         })
         this.loading = false
-        if (this.previousPage?.name && this.previousPage?.path !== '/') {
+        const checkRoute = () => {
+          if (this.previousPage?.path !== '/verify-email')
+            return '/verify-email'
+          return '/'
+        }
+        if (
+          this.previousPage?.name &&
+          this.previousPage?.path !== checkRoute()
+        ) {
           this.$router.push(this.previousPage.fullPath)
         } else {
           this.$router.push('/dashboard')
