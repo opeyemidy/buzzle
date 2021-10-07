@@ -144,7 +144,7 @@ export default {
         })
         this.loading = false
         const checkRoute = () => {
-          if (this.previousPage?.path !== '/verify-email')
+          if (this.previousPage?.path === '/verify-email')
             return '/verify-email'
           return '/'
         }
