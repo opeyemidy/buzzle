@@ -114,8 +114,8 @@ export default {
       previousPage: null,
 
       login: {
-        email: 'fake@example.com',
-        password: 'password1',
+        email: '',
+        password: '',
       },
     }
   },

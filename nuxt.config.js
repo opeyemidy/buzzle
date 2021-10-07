@@ -2,6 +2,9 @@ import baseURL from './endpoints/baseUrl'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
+  generate: {
+    fallback: true,
+  },
   head: {
     title:
       'Buzzle: Sell and Redeem Gift Cards For Naira - 100% \nReliable-Trusted-Effictent-convenient Platform',
